@@ -71,20 +71,9 @@ app.post('/api/v1/twilio', async (req, res, next) => {
     if (user === null) {
         user = await db.User.create({ phone })
 
-        response.message(`welcome to boudreaudle, ty for playing. come back each day for a new word.\n
-       __
-      (oo)
-     |    |
- ^^  (vVVv)   ^^
- vv  (VvvV)  vv
-  vv(      )vv
-   (        )        
-  (          )    ^  
-  (          )___( ) 
- (            )     )
-  (----------)     )
-    WW    WW_____)
-   W       W\n\nstart the game by making a 5 letter guess.`)
+        response.message(
+            `welcome to boudreaudle, ty for playing. come back each day for a new word.\nstart the game by making a 5 letter guess.`
+        )
     } else {
         let guess = req.body.Body.toUpperCase()
         console.log(`The user guessed ${guess}`)
