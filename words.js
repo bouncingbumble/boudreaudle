@@ -2,7 +2,6 @@ exports.words = [
     'CIGAR',
     'REBUT',
     'SISSY',
-    'HUMPH',
     'AWAKE',
     'BLUSH',
     'FOCAL',

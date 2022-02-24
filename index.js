@@ -18,7 +18,7 @@ var CronJob = require('cron').CronJob
 
 console.log('Before job instantiation')
 const job = new CronJob(
-    '00 00 00 * * *',
+    '00 00 08 * * *',
     async () => {
         const d = new Date()
         console.log('Midnight:', d)
@@ -75,8 +75,9 @@ app.post('/api/v1/twilio', async (req, res, next) => {
             `welcome to boudreaudle, ty for playing. come back each day for a new word.\nstart the game by making a 5 letter guess.`
         )
     } else {
-        let guess = req.body.Body.toUpperCase()
+        let guess = req.body.Body.toUpperCase().replace(/\s+/g, '')
         console.log(`The user guessed ${guess}`)
+        let winLossMessage = ''
 
         if (validWords.check(guess.toLowerCase())) {
             if (guess.length === 5) {
@@ -96,13 +97,19 @@ app.post('/api/v1/twilio', async (req, res, next) => {
                         user
                     )
 
-                    if (guesses > 5) {
+                    if (guesses > 5 && guess !== todaysWord) {
                         guesses = 'X'
                         user.streak = 0
                         await user.save()
+                        winLossMessage =
+                            'you lose!\nreply with "word?" to see solution'
+                    }
+
+                    if (guess === todaysWord) {
+                        winLossMessage = 'you win!'
                     }
                     response.message(
-                        `boudreaudle ${getBoudreaudleDay()} ${guesses}/6\n${gameMessage}`
+                        `boudreaudle ${getBoudreaudleDay()} ${guesses}/6\n${gameMessage} \n ${winLossMessage}`
                     )
                 } catch (error) {
                     console.log(error)
