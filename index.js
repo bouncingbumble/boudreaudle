@@ -111,7 +111,7 @@ app.post('/api/v1/twilio', async (req, res, next) => {
                                 user.streak = 0
                                 await user.save()
                                 winLossMessage =
-                                    'you lose!\nreply with "word?" to see solution'
+                                    'you lost!\nreply with "word?" to see solution. come back tomorrow (12:00am PST) to play again!'
                             }
 
                             if (guess === todaysWord) {
